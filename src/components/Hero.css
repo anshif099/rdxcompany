@@ -1,0 +1,774 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   RDX Hero  –  Hero.css
+═══════════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ── Tokens ─────────────────────────────────────────────────────────────────── */
+:root {
+  --rdx-primary: #D0301E;
+  --rdx-secondary: #18C1BD;
+  --rdx-pink:    var(--rdx-primary);
+  --rdx-green:   var(--rdx-secondary);
+  --rdx-dark:    #0a0a0a;
+  --rdx-nav-bg:  #1c1e25;
+  --rdx-white:   #ffffff;
+  --rdx-cube-sz: 220px;
+  --font:        'Inter', system-ui, sans-serif;
+  --header-gap:  24px;   /* gap from viewport top */
+}
+
+.rdx-hero {
+  position: relative;
+  width: 100%;
+  height: 3000vh; /* Extremely tall for very slow scrolling */
+  background-color: #0a0a0a; /* fallback */
+  background: color-mix(in srgb, #0a0a0a, #f4f4f6 calc(var(--scroll-progress) * 100%));
+  font-family: var(--font);
+  /* overflow-x: hidden removed to fix position: sticky */
+  cursor: none;          /* hide system cursor across hero — floating label acts as cursor */
+  display: flex;
+  flex-direction: column;
+}
+
+.rdx-hero-about-anchor {
+  position: absolute;
+  top: 48%;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.rdx-hero-viewport {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+
+.rdx-hero-viewport > * {
+  pointer-events: auto;
+}
+
+/* Restore system pointer on every real interactive element inside hero */
+.rdx-hero button,
+.rdx-hero a,
+.rdx-hero .rdx-logo {
+  cursor: pointer;
+}
+
+/* ── Full-page background video ─────────────────────────────────────────────── */
+.rdx-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.rdx-bg-video--visible {
+  opacity: 1;
+}
+
+.rdx-bg-video--blur {
+  object-fit: cover;
+  filter: blur(40px) brightness(0.7);
+  transform: scale(1.1);
+  z-index: -1;
+}
+
+/* Dark overlay so text / UI stay readable over video */
+.rdx-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.rdx-bg-overlay--active {
+  opacity: 1;
+}
+
+/* ── Transparent hit-area for label visibility ───────────────────────────────── */
+/* Covers the whole section BEHIND the interactive elements */
+.rdx-hero-bg-hit {
+  position: absolute;
+  inset: 0;
+  z-index: 2;           /* sits above video overlay but below header (z:100) */
+  pointer-events: auto; /* catches mouse for label show/hide */
+}
+
+/* ── Floating cursor label ───────────────────────────────────────────────────── */
+.scroll-label {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border-radius: 100px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  /* offset above-right of cursor tip */
+  margin-left: 20px;
+  margin-top: -38px;
+}
+
+.scroll-label--visible {
+  opacity: 1;
+}
+
+.scroll-label svg {
+  flex-shrink: 0;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────────── */
+.rdx-header {
+  position: absolute;
+  /* Floats down — NOT touching the very top edge */
+  top: var(--header-gap);
+  left: var(--header-gap);
+  right: var(--header-gap);
+  z-index: 100;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.rdx-brand {
+  display: flex;
+  align-items: stretch;
+  gap: 3px;   /* visible gap strip between logo cube and Menu */
+}
+
+/* ── Logo cube ───────────────────────────────────────────────────────────────── */
+.rdx-logo {
+  background: var(--rdx-pink);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 76px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ── Menu button ─────────────────────────────────────────────────────────────── */
+.rdx-menu-btn {
+  background: var(--rdx-white);
+  border: none;
+  color: #000000;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 16px 26px;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: color 0.2s, background 0.2s;
+}
+.rdx-menu-btn:hover {
+  color: #ffffff;
+  background: var(--rdx-pink);
+}
+
+/* ── Let's Talk — 3-D cube-face flip (white → teal) ────────────────────────── */
+.rdx-talk-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: var(--font);
+  perspective: 500px;
+  perspective-origin: 50% 100%;
+  height: 56px;
+  width: 168px;
+  flex-shrink: 0;
+}
+
+/* Inner flipper pivots on the bottom edge */
+.rdx-talk-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform-origin: 50% 100%;
+  transform: rotateX(0deg);
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.rdx-talk-btn:hover .rdx-talk-inner {
+  transform: rotateX(-90deg);
+}
+
+.rdx-talk-front,
+.rdx-talk-bottom {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* White front face */
+.rdx-talk-front {
+  background: var(--rdx-white);
+  color: #000;
+  transform: rotateX(0deg) translateZ(0);
+}
+
+/* Teal bottom face — appears from below on hover */
+.rdx-talk-bottom {
+  background: var(--rdx-green);
+  color: #000;
+  transform: rotateX(90deg) translateZ(56px);
+  transform-origin: 50% 100%;
+}
+
+/* ── Horizontal expanding nav ────────────────────────────────────────────────── */
+.rdx-nav {
+  position: absolute;
+  /* Same gap as header */
+  top: var(--header-gap);
+  left: var(--header-gap);
+  z-index: 200;
+  display: flex;
+  align-items: stretch;
+  background: var(--rdx-nav-bg);
+  overflow: hidden;
+  max-width: 76px;        /* collapsed = just logo */
+  width: auto;            /* wrap content width */
+  transition: max-width 0.6s cubic-bezier(0.77, 0, 0.18, 1);
+  white-space: nowrap;
+}
+
+.rdx-nav--open {
+  max-width: 1200px;
+}
+
+.rdx-nav-logo {
+  background: var(--rdx-pink);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 76px;
+}
+
+.rdx-nav-link {
+  color: var(--rdx-white);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 400;
+  padding: 16px 30px;
+  display: inline-flex;
+  align-items: center;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s;
+  flex-shrink: 0;
+}
+
+.rdx-nav--open .rdx-nav-link {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.rdx-nav-link:hover {
+  color: var(--rdx-pink);
+}
+
+.rdx-nav-close {
+  margin-left: 0;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: var(--rdx-white);
+  font-size: 1rem;
+  padding: 16px 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s ease 0.45s, background 0.2s, color 0.2s;
+}
+
+.rdx-nav--open .rdx-nav-close {
+  opacity: 1;
+}
+
+.rdx-nav-close:hover {
+  background: var(--rdx-pink);
+  color: #fff;
+}
+
+/* ── Hero centre ────────────────────────────────────────────────────────── */
+.rdx-hero-center {
+  position: relative;
+  z-index: 10;        /* above bg-hit layer (z:2) */
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* push down enough for the floated header */
+  padding-top: calc(var(--header-gap) + 56px);
+  transition: opacity 0.18s ease-out, transform 0.18s ease-out;
+}
+
+/* ── Cube wrapper ──────────────────────────────────────────────────────────── */
+.rdx-cube-wrapper {
+  width: var(--rdx-cube-sz);
+  height: var(--rdx-cube-sz);
+  perspective: 900px;
+  cursor: none;   /* hide system cursor — scroll label acts as cursor here */
+}
+
+/* ── 3-D CSS Cube ────────────────────────────────────────────────────────────── */
+.rdx-cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.rdx-cube__face {
+  position: absolute;
+  inset: 0;
+  width: var(--rdx-cube-sz);
+  height: var(--rdx-cube-sz);
+  backface-visibility: visible;
+}
+
+/* Face colours */
+.rdx-cube__face--front {
+  background: var(--rdx-pink);
+  transform: translateZ(calc(var(--rdx-cube-sz) / 2));
+  overflow: hidden;
+}
+.rdx-cube__face--back   { background: #A82618; transform: rotateY(180deg)  translateZ(calc(var(--rdx-cube-sz) / 2)); }
+.rdx-cube__face--left   { background: #8D1F14; transform: rotateY(-90deg)  translateZ(calc(var(--rdx-cube-sz) / 2)); }
+.rdx-cube__face--right  { background: #D0301E; transform: rotateY(90deg)   translateZ(calc(var(--rdx-cube-sz) / 2)); }
+.rdx-cube__face--top    { background: #E24735; transform: rotateX(90deg)   translateZ(calc(var(--rdx-cube-sz) / 2)); }
+.rdx-cube__face--bottom { background: #72180F; transform: rotateX(-90deg)  translateZ(calc(var(--rdx-cube-sz) / 2)); }
+
+/* Shading overlays */
+.rdx-cube__face--back::after,
+.rdx-cube__face--left::after,
+.rdx-cube__face--right::after,
+.rdx-cube__face--top::after,
+.rdx-cube__face--bottom::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.2) 100%);
+}
+
+/* ── RDX name on front face ─────────────────────────────────────────────────── */
+.rdx-cube__name {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.04em;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Google name on left face ── */
+.rdx-cube__face--left {
+  background: #111111 !important; /* Black face for Google */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rdx-cube__google-name {
+  font-size: 3.2rem;
+  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+  user-select: none;
+  font-family: 'Product Sans', 'Inter', system-ui, sans-serif;
+}
+
+
+
+/* ── Scrolled Theme Overrides (White Bg Mode) ── */
+.rdx-hero--scrolled .rdx-menu-btn {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+.rdx-hero--scrolled .rdx-talk-front {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+
+
+.rdx-hero--scrolled .scroll-label {
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  color: #000000;
+}
+
+/* ── Nike SVG on back face ── */
+.rdx-cube__face--back {
+  background: #f4f4f6 !important; /* light background for Nike logo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rdx-cube__nike-img {
+  width: 140px;
+  height: auto;
+  object-fit: contain;
+  transform: rotateY(180deg); /* counter-rotate mirrored back face contents */
+}
+
+/* ── Blurred Background Text "Who we are" ── */
+.rdx-bg-text {
+  position: absolute;
+  top: 20%;
+  left: 8%;
+  font-size: clamp(4rem, 12vw, 9.5rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  z-index: 1; /* behind the cube */
+  pointer-events: none;
+  display: flex;
+  gap: 0.15em;
+  font-family: 'Product Sans', 'Inter', system-ui, sans-serif;
+  transition: opacity 0.1s ease-out; /* fast response */
+}
+
+.rdx-bg-text-word--1 {
+  color: #111111;
+}
+
+.rdx-bg-text-word--2 {
+  color: #7f7f7f;
+}
+
+.rdx-bg-text-word--3 {
+  color: #dcdcdc;
+}
+
+.rdx-bg-text-dash {
+  color: #727272; /* dark gray dash */
+  transition: opacity 0.3s;
+}
+
+/* ── PlayStation SVG on right face ── */
+.rdx-cube__face--right {
+  background: #111111 !important; /* Black face for PlayStation */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rdx-cube__ps-img {
+  width: 110px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ── Bottom Right Description Text ── */
+.rdx-hero-bottom-right {
+  position: absolute;
+  bottom: 12%;
+  right: 8%;
+  max-width: 480px;
+  z-index: 10;
+  text-align: left;
+  font-family: var(--font);
+  pointer-events: none;
+}
+
+.rdx-br-title {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #111111;
+  letter-spacing: -0.03em;
+  margin-bottom: 10px;
+}
+
+.rdx-br-desc {
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #606060;
+  letter-spacing: -0.01em;
+}
+
+/* ── McDonald's face ── */
+.rdx-cube__face--front-mcd {
+  background: #f4f4f6 !important; /* light background for McDonald's logo */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.rdx-cube__mcd-img {
+  width: 105px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ── Bottom Right Extra line (Line 3) ── */
+.rdx-br-extra {
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #606060;
+  letter-spacing: -0.01em;
+  margin-top: 24px;
+}
+
+/* ── Pinned Intro Block ── */
+.rdx-hero-outro-wrapper {
+  position: absolute;
+  top: 25%;
+  left: 0;
+  width: 100%;
+  padding: 0 8vw;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.72fr);
+  gap: clamp(42px, 7vw, 132px);
+  z-index: 12;
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+  pointer-events: auto;
+}
+
+.rdx-hero-outro__heading > p {
+  color: #D0301E;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.rdx-hero-outro-wrapper h2 {
+  max-width: 950px;
+  margin-top: 18px;
+  margin-bottom: 0;
+  font-size: clamp(2.8rem, 6.2vw, 7.8rem);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+}
+
+.rdx-hero-outro__body {
+  align-self: end;
+  padding-bottom: 12px;
+}
+
+.rdx-hero-outro__copy {
+  max-width: 560px;
+  color: #FFFFFF;
+  font-size: clamp(1.08rem, 1.35vw, 1.38rem);
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.rdx-hero-outro__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 26px;
+}
+
+.rdx-hero-outro__tags span {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  padding: 0 16px;
+  background: #18C1BD;
+  color: #FFFFFF;
+  font-size: 0.82rem;
+  font-weight: 800;
+  border-radius: 4px;
+}
+
+/* ── Horizontal Services Slider ── */
+.rdx-hero-slider-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  z-index: 11;
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+.rdx-hero-slider-track {
+  display: flex;
+  gap: 20vw; /* 80vw card + 20vw gap = 100vw per card */
+  padding-left: 10vw; /* center the first card */
+  padding-right: 10vw;
+  transition: transform 0.15s cubic-bezier(0.1, 0.8, 0.25, 1);
+  will-change: transform;
+  align-items: center;
+}
+
+.rdx-hero-service-card {
+  flex-shrink: 0;
+  width: 80vw;
+  max-width: 1600px;
+  height: 75vh;
+  background: #ffffff;
+  border: 1px solid #eaeaea;
+  border-radius: 20px;
+  padding: 3vw;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.3, 1), 
+              border-color 0.6s, 
+              box-shadow 0.6s;
+  pointer-events: auto;
+}
+
+.rdx-hero-service-card--active {
+  transform: scale(1.02);
+  border-color: var(--rdx-pink);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+}
+
+.rdx-hero-service-card__img-container {
+  width: 100%;
+  flex: 1; /* fills remaining height */
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+.rdx-hero-service-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.3, 1);
+}
+
+.rdx-hero-service-card--active .rdx-hero-service-card__img {
+  transform: scale(1.08);
+}
+
+.rdx-hero-service-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.rdx-hero-service-card__num {
+  color: var(--rdx-pink);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.rdx-hero-service-card__title {
+  font-size: clamp(1.2rem, 1.6vw, 1.7rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: #101114;
+  margin: 4px 0 0 0;
+}
+
+.rdx-hero-service-card__meta {
+  color: #5e6670;
+  font-size: clamp(0.85rem, 1vw, 1rem);
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* ── Lego image ── */
+.rdx-cube__lego-img {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ── Back face pink RDX box swap ── */
+.rdx-cube__face--back-pink {
+  background: var(--rdx-pink) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+@media (max-width: 820px) {
+  .rdx-hero-outro-wrapper {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 0 6vw;
+    top: 15%;
+  }
+
+  .rdx-hero-service-card {
+    width: 65vw;
+    min-width: 290px;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .rdx-hero-service-card__img-container {
+    height: 180px;
+  }
+}

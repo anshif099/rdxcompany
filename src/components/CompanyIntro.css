@@ -1,0 +1,227 @@
+.rdx-company-intro {
+  --intro-ink: #101114;
+  --intro-muted: #5e6670;
+  position: relative;
+  width: 100%;
+  height: 450vh; /* scrollable track height for pinned animation */
+  background: #f7f7f8;
+  color: var(--intro-ink);
+  font-family: var(--font, 'Inter', system-ui, sans-serif);
+}
+
+/* Big RDX watermark background */
+.rdx-company-intro::before {
+  content: 'RDX';
+  position: absolute;
+  top: clamp(84px, 12vh, 150px);
+  right: 3vw;
+  z-index: 0;
+  color: rgba(16, 17, 20, 0.03);
+  font-size: clamp(11rem, 30vw, 34rem);
+  font-weight: 800;
+  line-height: 0.76;
+  pointer-events: none;
+}
+
+/* Sticky viewport pinning the layout while user scrolls */
+.rdx-company-intro-viewport {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Intro Header Block */
+.rdx-company-intro__header-wrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.72fr);
+  gap: clamp(42px, 7vw, 132px);
+  padding: 0 8vw;
+  width: 100%;
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+  position: absolute;
+  top: 25%;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.rdx-company-intro__heading > p {
+  color: #D0301E;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.rdx-company-intro__heading h2 {
+  max-width: 950px;
+  margin-top: 18px;
+  margin-bottom: 0;
+  font-size: clamp(2.8rem, 6.2vw, 7.8rem);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+}
+
+.rdx-company-intro__body {
+  align-self: end;
+  padding-bottom: 12px;
+}
+
+.rdx-company-intro__copy {
+  max-width: 560px;
+  color: var(--intro-muted);
+  font-size: clamp(1.08rem, 1.35vw, 1.38rem);
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.rdx-company-intro__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 26px;
+}
+
+.rdx-company-intro__tags span {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  padding: 0 16px;
+  background: #18C1BD;
+  color: #071e1d;
+  font-size: 0.82rem;
+  font-weight: 800;
+  border-radius: 4px;
+}
+
+/* Horizontal Slider Container */
+.rdx-company-intro__slider-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  z-index: 5;
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+/* Horizontal Track sliding leftwards */
+.rdx-company-intro__slider-track {
+  display: flex;
+  gap: 60px;
+  padding-left: 20vw;
+  padding-right: 40vw;
+  transition: transform 0.15s cubic-bezier(0.1, 0.8, 0.25, 1);
+  will-change: transform;
+}
+
+/* Card Styling */
+.rdx-service-card {
+  flex-shrink: 0;
+  width: 33vw;
+  min-width: 360px;
+  max-width: 520px;
+  background: #ffffff;
+  border: 1px solid #eaeaea;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.3, 1), 
+              border-color 0.6s, 
+              box-shadow 0.6s;
+  pointer-events: auto;
+}
+
+.rdx-service-card--active {
+  transform: scale(1.05);
+  border-color: var(--rdx-pink);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+}
+
+/* Image Container and Zoom Animations */
+.rdx-service-card__img-container {
+  width: 100%;
+  height: 240px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+.rdx-service-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.3, 1);
+}
+
+.rdx-service-card--active .rdx-service-card__img {
+  transform: scale(1.08);
+}
+
+/* Card Text Info */
+.rdx-service-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.rdx-service-card__num {
+  color: var(--rdx-pink);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.rdx-service-card__title {
+  font-size: clamp(1.2rem, 1.6vw, 1.7rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: #101114;
+  margin: 4px 0 0 0;
+}
+
+.rdx-service-card__meta {
+  color: var(--intro-muted);
+  font-size: clamp(0.85rem, 1vw, 1rem);
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 820px) {
+  .rdx-company-intro__header-wrapper {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 0 6vw;
+    top: 15%;
+  }
+
+  .rdx-company-intro__heading h2 {
+    font-size: clamp(2.5rem, 10vw, 4.5rem);
+  }
+
+  .rdx-service-card {
+    width: 65vw;
+    min-width: 290px;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .rdx-service-card__img-container {
+    height: 180px;
+  }
+}

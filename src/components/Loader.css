@@ -1,0 +1,138 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   RDX Loader  –  Loader.css
+   Animation sequence:
+     Phase 0: Counting (0-100%) on black bg, "Hello" -> "We are"
+     Phase 1: Vertical Split, panels slide left/right revealing white bg
+     Phase 2: Cube rotation, shows 9 box images on cube sides
+     Phase 3: Launch, bg transitions to black, header lightens
+ ═══════════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ── Container ── */
+.rdx-loader-container {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #ffffff;
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow: hidden;
+  transition: background-color 1.0s cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+.rdx-loader-container--counting {
+  background: #0a0a0a !important;
+}
+
+.rdx-loader-container--black {
+  background: #0a0a0a !important;
+}
+
+/* ── Badge (AI-native.) ── */
+.rdx-loader-badge {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 10005;
+  user-select: none;
+  pointer-events: none;
+}
+
+.rdx-loader-badge__sq {
+  width: 10px;
+  height: 10px;
+  background: var(--rdx-pink);
+}
+
+.rdx-loader-badge__text {
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* ── Percentage Outline in Background ── */
+.rdx-loader-percentage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(8rem, 24vw, 22rem);
+  font-weight: 700;
+  color: #1a1a1a;
+  user-select: none;
+  z-index: 10004; /* above the panels */
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* ── Foreground Center Text (Hello / We are) ── */
+.rdx-loader-fg-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 500;
+  color: #ffffff;
+  z-index: 10004; /* above the panels */
+  pointer-events: none;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── Sliding Split Panels ── */
+.rdx-loader-panel {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50.2vw; /* slight overlap to prevent gaps */
+  background: #0a0a0a;
+  z-index: 10003;
+  transition: transform 1.0s cubic-bezier(0.77, 0, 0.18, 1);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.rdx-loader-panel--left {
+  left: 0;
+  justify-content: flex-end;
+}
+
+.rdx-loader-panel--right {
+  right: 0;
+  justify-content: flex-start;
+}
+
+.rdx-loader-panel--left.rdx-loader-panel--gone {
+  transform: translateX(-100%);
+}
+
+.rdx-loader-panel--right.rdx-loader-panel--gone {
+  transform: translateX(100%);
+}
+
+.rdx-loader-panel__text {
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.rdx-loader-panel--left .rdx-loader-panel__text {
+  margin-right: 18px; /* space between "We" and "are" */
+}
+
+.rdx-loader-panel--right .rdx-loader-panel__text {
+  margin-left: 18px;
+}
+
+/* ── Obsolete styles cleaned ── */
+
